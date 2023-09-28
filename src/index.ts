@@ -2,13 +2,13 @@
   kintone.events.on(
     ['app.record.index.show'],
     (event) => {
-      const userInput = prompt('Enter your favorite URL');
-      if (userInput) {
-        location.href = userInput;
+      console.log(event);
+      const url = new URL(location.href);
+      const message = url.searchParams.get('message');
+      if (message !== null) {
+        const resultElm = document.querySelector('#result');
+        if (resultElm) resultElm.innerHTML = message;
       }
-
-      const records = event.records;
-      console.log(records);
     }
   );
 })();
