@@ -1,11 +1,14 @@
-type User = {
-  name: string;
-  age: number;
-  skills: string[];
-};
+(() => {
+  kintone.events.on(
+    ['app.record.index.show'],
+    (event) => {
+      const userInput = prompt('Enter your favorite URL');
+      if (userInput) {
+        location.href = userInput;
+      }
 
-const Sato: User = {
-  name: 'Sato',
-  age: 28,
-  skills: ['JavaScript', 'TypeScript', 'React', 'Vue', 'Angular'],
-};
+      const records = event.records;
+      console.log(records);
+    }
+  );
+})();
