@@ -1,6 +1,14 @@
 {
+  "baseBranches": ["develop"],
   "extends": ["config:base"],
   "timezone": "Asia/Tokyo",
-  "automerge": true,
-  "branchConcurrentLimit": 0
+  "branchConcurrentLimit": 0,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor","patch"],
+      "excludePackageNames": ["typescript"],
+      "automerge": true,
+      "groupName": "all minor and patch update"
+    }
+  ]
 }
