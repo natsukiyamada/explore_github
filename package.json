@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cybozu/eslint-config": "^20.0.1",
+    "@cybozu/eslint-config": "^22.0.0",
     "@kintone/customize-uploader": "^8.0.0",
     "@kintone/dts-gen": "^8.0.0",
     "@types/node": "^20.4.4",
