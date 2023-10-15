@@ -2,6 +2,11 @@
   "baseBranches": ["develop"],
   "extends": ["config:base"],
   "timezone": "Asia/Tokyo",
+  "schedule": [
+    "after 6pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
   "branchConcurrentLimit": 0,
   "packageRules": [
     {
