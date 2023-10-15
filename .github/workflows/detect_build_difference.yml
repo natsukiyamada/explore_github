@@ -2,13 +2,9 @@ name: Detect build difference
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [release, develop]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [release, develop]
 jobs:
   diff:
     runs-on: ubuntu-latest
