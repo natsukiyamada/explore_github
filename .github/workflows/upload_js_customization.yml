@@ -23,7 +23,7 @@ jobs:
           npm run build
       - name: Upload to kintone
         run: |
-          npx kintone-customize-uploader --base-url $KINTONE_BASE_URL --username $KINTONE_USERNAME --password $KINTONE_PASSWORD --proxy $KINTONE_HTTP_PROXY dest/customize-manifest.json
+          npx kintone-customize-uploader dest/customize-manifest.json --base-url $KINTONE_BASE_URL --username $KINTONE_USERNAME --password $KINTONE_PASSWORD --proxy $KINTONE_HTTP_PROXY
         env:
           KINTONE_BASE_URL: ${{ secrets.KINTONE_BASE_URL }}
           KINTONE_USERNAME: ${{ secrets.KINTONE_USERNAME }}
