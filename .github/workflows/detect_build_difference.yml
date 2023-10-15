@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+      - develop
 jobs:
   diff:
     runs-on: ubuntu-latest
@@ -26,19 +27,19 @@ jobs:
       - name: Build
         run: |
           npm run build
-          mv build /tmp/head
+          mv dist /tmp/head
 
       # build before update
       - uses: actions/checkout@v3
         with:
-          ref: main
+          ref: develop
       - name: Install
         run: |
           npm ci
       - name: Build
         run: |
           npm run build
-          mv build /tmp/base
+          mv dist /tmp/base
 
       # check build difference
       - name: Diff
