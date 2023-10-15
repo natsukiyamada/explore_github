@@ -7,7 +7,7 @@
     {
       "matchUpdateTypes": ["minor","patch"],
       "excludePackageNames": ["typescript"],
-      "automerge": true,
+      "automerge": false,
       "groupName": "all minor and patch update"
     }
   ]
