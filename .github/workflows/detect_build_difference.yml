@@ -1,0 +1,46 @@
+name: Detect build difference
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # build after update
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+      - name: Install
+        run: |
+          npm ci
+      - name: Build
+        run: |
+          npm run build
+          mv build /tmp/head
+
+      # build before update
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Install
+        run: |
+          npm ci
+      - name: Build
+        run: |
+          npm run build
+          mv build /tmp/base
+
+      # check build difference
+      - name: Diff
+        run: |
+          diff -r /tmp/head /tmp/base
