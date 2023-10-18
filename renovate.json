@@ -3,12 +3,17 @@
   "extends": ["config:base"],
   "timezone": "Asia/Tokyo",
   "branchConcurrentLimit": 0,
+  "automerge": true,
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
-      "excludePackageNames": ["typescript"],
-      "automerge": false,
-      "groupName": "all minor and patch update"
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "groupName": "husky",
+      "matchPackagePatterns": ["husky"],
+      "rebaseWhen": "conflicted",
+      "automerge": false
     }
   ]
 }
