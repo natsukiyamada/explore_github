@@ -24,6 +24,8 @@ jobs:
 
   build-on-base-branch:
     runs-on: ubuntu-latest
+    outputs:
+      base_sha: ${{ steps.get-sha.outputs.sha }}
     steps:
       - uses: actions/setup-node@v3
         with:
@@ -55,11 +57,11 @@ jobs:
         with:
           name: ${{ github.sha }}-current
           path: dist-current
-      - uses: actions/download-artifact@v3
+      - name: Download base artifact by SHA from previous job
+        uses: actions/download-artifact@v3
         with:
-          name: ${{ github.sha }}-base
+          name: ${{ needs.build-on-base-branch.outputs.base_sha }}-base
           path: dist-base
-
       - id: diff-name-only
         uses: gh640/command-result-action@v1
         with:
