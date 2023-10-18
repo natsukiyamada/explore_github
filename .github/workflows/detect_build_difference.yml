@@ -48,9 +48,6 @@ jobs:
     needs:
       - build-on-current-branch
       - build-on-base-branch
-    outputs:
-      diff-name-only: ${{ steps.diff-name-only.outputs.stdout }}
-      diff-exit-code: ${{ steps.diff-name-only.outputs.exitCode }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v3
@@ -62,7 +59,5 @@ jobs:
         with:
           name: ${{ needs.build-on-base-branch.outputs.base_sha }}-base
           path: dist-base
-      - id: diff-name-only
-        uses: gh640/command-result-action@v1
-        with:
-          command: diff -qr dist-current dist-base
+      - name: Get diff
+        run: diff dist-current dist-base
