@@ -6,39 +6,57 @@ on:
   pull_request:
     branches: [release, develop]
 jobs:
-  diff:
-    if: ${{ github.actor == 'renovate[bot]' }}
+  build-on-current-branch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-
-      # build after update
+          node-version: "18"
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
-      - name: Install
-        run: |
-          npm ci
-      - name: Build
-        run: |
-          npm run build
-          mv dist /tmp/head
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.sha }}-current
+          path: dist
 
-      # build before update
+  build-on-base-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
       - uses: actions/checkout@v3
         with:
           ref: develop
-      - name: Install
-        run: |
-          npm ci
-      - name: Build
-        run: |
-          npm run build
-          mv dist /tmp/base
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.sha }}-base
+          path: dist
 
-      # check build difference
-      - name: Diff
-        run: |
-          diff -r /tmp/head /tmp/base
+  detect-build-diff:
+    needs:
+      - build-on-current-branch
+      - build-on-base-branch
+    outputs:
+      diff-name-only: ${{ steps.diff-name-only.outputs.stdout }}
+      diff-exit-code: ${{ steps.diff-name-only.outputs.exitCode }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.sha }}-current
+          path: dist-current
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ github.sha }}-base
+          path: dist-base
+
+      - id: diff-name-only
+        uses: gh640/command-result-action@v1
+        with:
+          command: diff -qr dist-current dist-base
