@@ -8,24 +8,27 @@
     "lint": "eslint --ext .ts src/",
     "build": "webpack --mode development",
     "upload": ". ./.env && kintone-customize-uploader dest/customize-manifest.json --base-url $KINTONE_BASE_URL --username $KINTONE_USERNAME --password $KINTONE_PASSWORD",
-    "develop": "run-s build upload"
+    "develop": "run-s build upload",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cybozu/eslint-config": "^22.0.2",
     "@kintone/customize-uploader": "^8.0.0",
     "@kintone/dts-gen": "^8.0.0",
     "@types/node": "^20.4.4",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "css-loader": "6.8.1",
-    "eslint": "8.51.0",
+    "eslint": "^8.51.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.4.4",
-    "typescript": "^5.1.3",
+    "typescript": "^5.2.2",
     "webpack": "^5.88.1",
-    "webpack-cli": "5.1.4"
+    "webpack-cli": "5.1.4",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "@kintone/rest-api-client": "^5.0.0"
