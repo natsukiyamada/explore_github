@@ -14,7 +14,7 @@ jobs:
           node-version: "18"
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.ref }}
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-artifact@v3
@@ -28,14 +28,18 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - uses: actions/checkout@v3
+      - name: Checkout base branch
+        uses: actions/checkout@v3
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.base.ref }}
+      - name: Get the latest commit SHA of develop branch
+        id: get-sha
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
       - run: npm ci
       - run: npm run build
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ github.sha }}-base
+          name: ${{ steps.get-sha.outputs.sha }}-base
           path: dist
 
   detect-build-diff:
