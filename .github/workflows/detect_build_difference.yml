@@ -71,8 +71,8 @@ jobs:
             const fs = require('fs')
             const result = fs.readFileSync('/tmp/result.txt', 'utf8')
             const commentBody = result.trim() ?
-              `静的アセットのビルド結果に差分があります👀<details><summary>詳細</summary><pre>${result}</pre></details>`
-              : '静的アセットのビルド結果に差分はありません🎉'
+              `There are differences in the build artifacts.<details><summary>詳細</summary><pre>${result}</pre></details>`
+              : 'There are no differences in the build artifacts.'
 
             await github.issues.createComment({
               issue_number: context.issue.number,
