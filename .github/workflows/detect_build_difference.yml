@@ -64,7 +64,7 @@ jobs:
           diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
       - name: Comment to PR
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -74,7 +74,7 @@ jobs:
               'There are differences in the build artifacts. Please test external design in a test environment.'
               : 'There are no differences in the build artifacts. So it is not necessary to test external design in a test environment.'
 
-            await github.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
