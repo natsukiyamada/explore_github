@@ -50,6 +50,7 @@ jobs:
       - build-on-base-branch
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
         with:
           name: ${{ github.sha }}-current
@@ -61,7 +62,7 @@ jobs:
           path: dist-base
       - name: Get diff
         run: |
-          diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
+          git diff --no-index dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
       - name: Comment to PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v3
