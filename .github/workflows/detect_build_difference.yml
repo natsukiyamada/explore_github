@@ -62,12 +62,6 @@ jobs:
       - name: Get diff
         run: |
           diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
-      - name: Check for differences
-        run: |
-          if [ -f /tmp/diff_flag ]; then
-            echo "Differences found in build. Failing the CI."
-            exit 1
-          fi
       - name: Comment to PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v3
@@ -77,8 +71,8 @@ jobs:
             const fs = require('fs')
             const result = fs.readFileSync('/tmp/result.txt', 'utf8')
             const commentBody = result.trim() ?
-              `Differences found in build<details><summary>詳細</summary><pre>${result}</pre></details>`
-              : 'Differences has not been found in build'
+              `静的アセットのビルド結果に差分があります👀<details><summary>詳細</summary><pre>${result}</pre></details>`
+              : '静的アセットのビルド結果に差分はありません🎉'
 
             await github.issues.createComment({
               issue_number: context.issue.number,
@@ -86,3 +80,9 @@ jobs:
               repo: context.repo.repo,
               body: commentBody
             })
+      - name: Check for differences and fail if found
+        run: |
+          if [ -f /tmp/diff_flag ]; then
+            echo "Differences found in build. Failing the CI."
+            exit 1
+          fi
