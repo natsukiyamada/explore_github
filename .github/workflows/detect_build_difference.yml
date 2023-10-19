@@ -62,7 +62,7 @@ jobs:
           path: dist-base
       - name: Get diff
         run: |
-          git diff --stat dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
+          git diff --name-only dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
       - name: Comment to PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v3
