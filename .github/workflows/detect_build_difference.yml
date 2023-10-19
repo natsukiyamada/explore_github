@@ -7,7 +7,6 @@ on:
     branches: [release, develop]
 jobs:
   build-on-current-branch:
-    if: ${{ github.actor == 'renovate[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
@@ -24,7 +23,6 @@ jobs:
           path: dist
 
   build-on-base-branch:
-    if: ${{ github.actor == 'renovate[bot]' }}
     runs-on: ubuntu-latest
     outputs:
       base_sha: ${{ steps.get-sha.outputs.sha }}
@@ -47,7 +45,6 @@ jobs:
           path: dist
 
   detect-build-diff:
-    if: ${{ github.actor == 'renovate[bot]' }}
     needs:
       - build-on-current-branch
       - build-on-base-branch
@@ -63,4 +60,29 @@ jobs:
           name: ${{ needs.build-on-base-branch.outputs.base_sha }}-base
           path: dist-base
       - name: Get diff
-        run: diff dist-current dist-base
+        run: |
+          diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
+      - name: Check for differences
+        run: |
+          if [ -f /tmp/diff_flag ]; then
+            echo "Differences found in build. Failing the CI."
+            exit 1
+          fi
+      - name: Comment to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs')
+            const result = fs.readFileSync('/tmp/result.txt', 'utf8')
+            const commentBody = result.trim() ?
+              `Differences found in build<details><summary>詳細</summary><pre>${result}</pre></details>`
+              : 'Differences has not been found in build'
+
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            })
