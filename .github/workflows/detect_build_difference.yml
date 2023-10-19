@@ -80,9 +80,10 @@ jobs:
               repo: context.repo.repo,
               body: commentBody
             })
-      - name: Check for differences and fail if found
+      - name: Fail CI for Renovate PRs with differences
+        if: github.event_name == 'pull_request' && github.actor == 'renovate[bot]'
         run: |
           if [ -f /tmp/diff_flag ]; then
-            echo "Differences found in build. Failing the CI."
+            echo "Differences found in build for a Renovate PR. Failing the CI."
             exit 1
           fi
