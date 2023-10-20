@@ -71,8 +71,8 @@ jobs:
             const fs = require('fs')
             const result = fs.readFileSync('/tmp/result.txt', 'utf8')
             const commentBody = result.trim() ?
-              'There are differences in the build artifacts. Please test external design in a test environment.'
-              : 'There are no differences in the build artifacts. So it is not necessary to test external design in a test environment.'
+              '**There are differences** in the build artifacts. **Please test external design** in a test environment.'
+              : '**There are no differences** in the build artifacts. So **it is not necessary to test external design** in a test environment.'
 
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
