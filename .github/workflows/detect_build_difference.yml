@@ -1,10 +1,7 @@
 name: Detect build difference
 
-on:
-  push:
-    branches: [release, develop]
-  pull_request:
-    branches: [release, develop]
+on: workflow_call
+
 jobs:
   build-on-current-branch:
     runs-on: ubuntu-latest
