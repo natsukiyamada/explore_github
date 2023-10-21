@@ -1,19 +1,16 @@
 name: Deploy on PR Merged to Develop
 
 on:
-  pull_request:
-    branches: [develop]
-    types:
-      - closed
+  push:
+    branches: [main]
 
 jobs:
   if_merged:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: "16"
       - uses: actions/checkout@v4
       - name: Install dependencies
         run: |
