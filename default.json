@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":label(deps)",
+    ":timezone(Asia/Tokyo)",
+    ":automergeMinor"
+  ],
+  "baseBranches": ["develop"],
+  "branchConcurrentLimit": 0,
+  "branchPrefix": "deps/",
+  "ignorePaths": ["**/node_modules/**"]
+}
