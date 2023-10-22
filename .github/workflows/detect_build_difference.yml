@@ -6,15 +6,15 @@ jobs:
   build-on-current-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
           node-version: "18"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ github.ref }}
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3
         with:
           name: ${{ github.sha }}-current
           path: dist
@@ -24,11 +24,11 @@ jobs:
     outputs:
       base_sha: ${{ steps.get-sha.outputs.sha }}
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
           node-version: "18"
       - name: Checkout base branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ github.event.pull_request.base.ref }}
       - name: Get the latest commit SHA of develop branch
@@ -36,7 +36,7 @@ jobs:
         run: echo "::set-output name=sha::$(git rev-parse HEAD)"
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3
         with:
           name: ${{ steps.get-sha.outputs.sha }}-base
           path: dist
@@ -47,12 +47,12 @@ jobs:
       - build-on-base-branch
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3
         with:
           name: ${{ github.sha }}-current
           path: dist-current
       - name: Download base artifact by SHA from previous job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3
         with:
           name: ${{ needs.build-on-base-branch.outputs.base_sha }}-base
           path: dist-base
@@ -61,7 +61,7 @@ jobs:
           diff dist-current dist-base > /tmp/result.txt || echo "Diff detected" > /tmp/diff_flag
       - name: Comment to PR
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v6
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
