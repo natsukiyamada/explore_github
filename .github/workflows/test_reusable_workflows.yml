@@ -1,0 +1,13 @@
+name: Commonised CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  basic-ci:
+    uses: natsukiyamada/explore_github/.github/workflows/main.yml@develop
+  check-build-difference:
+    uses: natsukiyamada/explore_github/.github/workflows/detect_build_difference.yml@develop
