@@ -6,7 +6,7 @@ jobs:
   build-on-current-branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
+      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
         with:
           node-version: "18"
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -24,7 +24,7 @@ jobs:
     outputs:
       base_sha: ${{ steps.get-sha.outputs.sha }}
     steps:
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
+      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
         with:
           node-version: "18"
       - name: Checkout base branch
