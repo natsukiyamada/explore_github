@@ -14,7 +14,7 @@ jobs:
           ref: ${{ github.ref }}
       - run: npm ci
       - run: npx webpack --mode production
-      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4
         with:
           name: ${{ github.sha }}-current
           path: dist
@@ -36,7 +36,7 @@ jobs:
         run: echo "::set-output name=sha::$(git rev-parse HEAD)"
       - run: npm ci
       - run: npx webpack --mode production
-      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3
+      - uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4
         with:
           name: ${{ steps.get-sha.outputs.sha }}-base
           path: dist
